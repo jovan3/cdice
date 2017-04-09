@@ -2,7 +2,7 @@
 
 (defn create [player_name dice]
   {:pre [(and (every? #(<= 1 % 6) dice) (not (empty? player_name)))]}
-  (= 1 1))
+  (list player_name dice))
 
 (defn num-of [value dice]
   (let [freq-value (get (frequencies dice) value 0)
