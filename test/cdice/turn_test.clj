@@ -4,7 +4,7 @@
             [cdice.turn :as turn]))
 
 (deftest test-guess
-  (testing "should return the difference between the number of dices with a given value among all the players and the guess"
+  (testing "should return the difference between the number of dice with a given value among all the players and the guess"
     (let [player1_set (set/create "player1" '(1 2 3))
           player2_set (set/create "player2" '(2 3 4))
           player3_set (set/create "player3" '(3 4 5))
