@@ -29,5 +29,23 @@
   
   (testing "when the guess is other than :L"
     (testing "should return :proceed, the current player and guess"
+      (is (= {:next :proceed :played {:player "player1" :guess {:value 2 :how_many 3}}} (game/play  {:player "player1" :guess {:value 2 :how_many 2}} {:value 2 :how_many 3} player_sets))))
+    (testing "should throw exception if the current guess 'how_many' is less than or equal to the one from the previous guess for the same value"
+      (is (thrown? java.lang.AssertionError (game/play {:player "player1" :guess {:value 2 :how_many 3}} {:value 2 :how_many 3} player_sets)))
+      (is (thrown? java.lang.AssertionError (game/play {:player "player1" :guess {:value 6 :how_many 10}} {:value 6 :how_many 10} player_sets)))
+      (is (thrown? java.lang.AssertionError (game/play {:player "player1" :guess {:value 6 :how_many 10}} {:value 6 :how_many 9} player_sets))))
       
-      (is (= {:next :proceed :played {:player "player1" :guess {:value 2 :how_many 3}}} (game/play  {:player "player1" :guess {:value 2 :how_many 2}} {:value 2 :how_many 3} player_sets))))))
+
+    (testing "and when the current guess value is different than the previous guess value"
+      (testing "should throw exception if the current value is smaller than the previous and the current 'how_many' is smaller or equal than the previous"
+        (is (thrown? java.lang.AssertionError (game/play {:player "player1" :guess {:value 5 :how_many 5}} {:value 4 :how_many 5} player_sets)))
+        (is (thrown? java.lang.AssertionError (game/play {:player "player1" :guess {:value 5 :how_many 5}} {:value 4 :how_many 4} player_sets))))
+      (testing "should throw exception if the curent value is larger than the previous and the current 'how_many' is smaller than the previous"
+        (is (thrown? java.lang.AssertionError (game/play {:player "player1" :guess {:value 5 :how_many 5}} {:value 6 :how_many 4} player_sets))))
+      (testing "should throw exception if the current value is less than the previous and the current 'how_many' is smaller than or equal to the previous"
+        (is (thrown? java.lang.AssertionError (game/play {:player "player1" :guess {:value 5 :how_many 5}} {:value 4 :how_many 5} player_sets)))
+        (is (thrown? java.lang.AssertionError (game/play {:player "player1" :guess {:value 5 :how_many 5}} {:value 4 :how_many 4} player_sets)))))))
+        
+   
+      
+

@@ -1,8 +1,27 @@
 (ns cdice.game
   [:require [cdice.turn :as turn]])
 
+(defn not_first_l_guess [previous_play guess]
+  (or previous_play (not= guess :L)))
+
+(defn invalid_guess [previous_play current_guess]
+  (if (or (not previous_play) (= current_guess :L)) false
+      (let [previous_guess (:guess previous_play)
+            prev_val (:value previous_guess)
+            prev_how_many (:how_many previous_guess)
+            current_val (:value current_guess)
+            current_how_many (:how_many current_guess)]
+        (some true?
+              [(and (= prev_val current_val) (= prev_how_many current_how_many))
+               (and (= prev_val current_val) (< current_how_many prev_how_many))
+               (and (> prev_val current_val) (= prev_how_many current_how_many))
+               (and (> prev_val current_val) (< current_how_many prev_how_many))
+               (and (< prev_val current_val) (< current_how_many prev_how_many))]))))
+
+
 (defn play [previous_play guess player_sets]
-  {:pre [(or previous_play (not= guess :L))]}
+  {:pre [(not_first_l_guess previous_play guess),
+         (not (invalid_guess previous_play guess))]}
   (if (= guess :L)
     (let [previous_guess (:value (:guess previous_play))
           previous_how_many (:how_many (:guess previous_play))
