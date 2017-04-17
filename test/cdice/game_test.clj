@@ -45,7 +45,3 @@
       (testing "should throw exception if the current value is less than the previous and the current 'how_many' is smaller than or equal to the previous"
         (is (thrown? java.lang.AssertionError (game/play {:player "player1" :guess {:value 5 :how_many 5}} {:value 4 :how_many 5} player_sets)))
         (is (thrown? java.lang.AssertionError (game/play {:player "player1" :guess {:value 5 :how_many 5}} {:value 4 :how_many 4} player_sets)))))))
-        
-   
-      
-
