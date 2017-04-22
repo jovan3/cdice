@@ -4,9 +4,9 @@
             [cdice.diceset :as set]))
 
 (def player_sets (list
-                  (set/create "player1" '(1 2 3))
-                  (set/create "player2" '(2 3 4))
-                  (set/create "player3" '(3 4 5))))
+                  (set/create "player2" '(1 2 3))
+                  (set/create "player3" '(2 3 4))
+                  (set/create "player1" '(3 4 5))))
 
 (deftest test-play
   ; Should decide how the game will proceed
@@ -29,7 +29,7 @@
   
   (testing "when the guess is other than :L"
     (testing "should return :proceed, the current player and guess"
-      (is (= {:next :proceed :played {:player "player1" :guess {:value 2 :how_many 3}}} (game/play  {:player "player1" :guess {:value 2 :how_many 2}} {:value 2 :how_many 3} player_sets))))
+      (is (= {:next :proceed :played {:player "player2" :guess {:value 2 :how_many 3}}} (game/play  {:player "player1" :guess {:value 2 :how_many 2}} {:value 2 :how_many 3} player_sets))))
     (testing "should throw exception if the current guess 'how_many' is less than or equal to the one from the previous guess for the same value"
       (is (thrown? java.lang.AssertionError (game/play {:player "player1" :guess {:value 2 :how_many 3}} {:value 2 :how_many 3} player_sets)))
       (is (thrown? java.lang.AssertionError (game/play {:player "player1" :guess {:value 6 :how_many 10}} {:value 6 :how_many 10} player_sets)))
@@ -44,4 +44,6 @@
         (is (thrown? java.lang.AssertionError (game/play {:player "player1" :guess {:value 5 :how_many 5}} {:value 6 :how_many 4} player_sets))))
       (testing "should throw exception if the current value is less than the previous and the current 'how_many' is smaller than or equal to the previous"
         (is (thrown? java.lang.AssertionError (game/play {:player "player1" :guess {:value 5 :how_many 5}} {:value 4 :how_many 5} player_sets)))
-        (is (thrown? java.lang.AssertionError (game/play {:player "player1" :guess {:value 5 :how_many 5}} {:value 4 :how_many 4} player_sets)))))))
+        (is (thrown? java.lang.AssertionError (game/play {:player "player1" :guess {:value 5 :how_many 5}} {:value 4 :how_many 4} player_sets)))))
+    (testing "when there's no previous guess"
+      (is (= {:next :proceed :played {:player "player2" :guess {:value 2 :how_many 3}}} (game/play nil {:value 2 :how_many 3} player_sets))))))

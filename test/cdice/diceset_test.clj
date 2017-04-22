@@ -16,7 +16,8 @@
 
 (deftest test-num-of
   (testing "should return the number of dices with a given value"
-    (is (= 1 (dset/num-of 5 '(2 3 4 5 6)))))
+    (is (= 1 (dset/num-of 5 '(2 3 4 5 6))))
+    (is (= 5 (dset/num-of 2 '(2 2 2 2 2)))))
 
   (testing "should count 1's as wildcards"
     (is (= 2 (dset/num-of 2 '(1 2)))))
